@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './components/App';
 
 // Find all widget divs
 const WidgetDivs = document.querySelectorAll('.reddit_widget')
