@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import Cookies from 'universal-cookie';
+import { v4 as uuid } from 'uuid';
+
 
 // Render each post
 function renderPost(post){
