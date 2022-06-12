@@ -1,6 +1,57 @@
 /* Chatbot */
 
+.circle-logo {
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+  border: 1px solid white;
+}
 
+.widget-header {
+  margin: 8px 12px;
+}
+
+.brand-name {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+}
+
+.status {
+  font-size: 12px;
+}
+
+.widget-show {
+  background-color: #f2f2f2;
+  border-radius: 15px;
+}
+
+.widget-header {
+  background-color: #ffffff;
+  border-radius: 15px 15px 0 0;
+}
+
+/* Messages */
+
+.mess-content {
+  background-color: #e6e6e6;
+  border-radius: 5px;
+  max-width: 290px;
+}
+
+.input-box {
+  
+}
+
+#user_says {
+  border: none;
+  border-radius: 10px;
+  height: 45px;
+  margin: 20px;
+  padding: 20px;
+  width: 90%;
+}
 
 /* Payment */
 

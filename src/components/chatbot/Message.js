@@ -1,24 +1,28 @@
 import React from 'react';
+import '../../App.css'
 
 const Message = (props) => {
     return (
-
-        <div className="col s12 m8 offset-m2 l6 offset-l3">
-            <div className="card-panel grey lighten-5 z-depth-1">
-                <div className="row valign-wrapper">
+        <div className="">
+            <div className="card-panel">
+                <div className={"d-flex " + (props.speaks === 'bot' ? '' : 'justify-content-end')}>
                     {props.speaks==='bot' &&
-                    <div className="col s2">
-                        <a href="/" className="btn-floating btn-large waves-effect waves-light red">{props.speaks}</a>
+                    <div className="p-2 d-flex align-items-end">
+                        <a href="/" className="">
+                            <img style={{ height: '32px', width: '32px' }} className='circle-logo' src='https://cdn-icons-png.flaticon.com/512/7498/7498761.png'/>
+                        </a>
                     </div>
                     }
-                    <div className="col s10">
+                    <div className="m-2 p-2 mess-content">
                       <span className="black-text">
                         {props.text}
                       </span>
                     </div>
                     {props.speaks==='user' &&
-                    <div className="col s2">
-                        <a href="/" className="btn-floating btn-large waves-effect waves-light red">{props.speaks}</a>
+                    <div className="p-2 d-flex align-items-end">
+                        <a href="/" className="">
+                            <img style={{ height: '32px', width: '32px' }} className='circle-logo' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdD_5n_V2y158Nau11WR9bYTz8Ldq0PWjZ3Q&usqp=CAU'/>
+                        </a>
                     </div>
                     }
                 </div>

@@ -10,7 +10,7 @@ import Card from './Card';
 import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
 import StripeContainer from './Payment/StripeContainer';
-
+import '../../App.css'
 const cookies = new Cookies();
 
 class Chatbot extends Component {;
@@ -333,25 +333,46 @@ class Chatbot extends Component {;
     render() {
         if (this.state.showBot) {
             return (
-                <div style={{ minHeight: 500, maxHeight: 470, width:400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgray'}}>
+                <div className='widget-show' style={{ minHeight: 500, width:400, position: 'absolute', bottom: 40, right: 10, border: '1px solid lightgray'}}>
                     <nav>
-                        <div className="nav-wrapper">
-                            <a href="/" className="brand-logo">ChatBot</a>
-                            <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                <li><a href="/" onClick={this.hide}>Close</a></li>
-                            </ul>
+                        <div className="widget-header d-block m-0 p-2">
+                            <div className='d-flex w-100'>
+                                <a href="/" className="brand-logo">
+                                    <img 
+                                    className='brand-img circle-logo' 
+                                    src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVpgu4O5hVuDPbGSf_qplQ777uOfRDzh0izg&usqp=CAU'/>
+                                </a>
+                                <div className='brand-infor d-flex align-items-center m-2'>
+                                    <div>
+                                        <a href='/' className='brand-name'>Talker</a>
+                                        <div className='d-flex align-items-center' style={{ height: '12px' }}>
+                                            <span style={{ color: ' #99ff33', marginRight: '4px', fontSize: '20px' }}>&bull;</span>
+                                            <p className='status m-0'>Always Active</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="nav-mobile" className="d-flex align-items-center" style={{ marginLeft: 'auto' }}>
+                                    <div>
+                                        <a href="/" onClick={this.hide}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </nav>
 
-                    <div id="chatbot"  style={{ minHeight: 388, maxHeight: 388, width:'100%', overflow: 'auto'}}>
+                    <div id="chatbot"  style={{ minHeight: 388, maxHeight: 388, width:'100%', overflow: 'auto', marginTop: '10px' }}>
 
                         {this.renderMessages(this.state.messages)}
                         <div ref={(el) => { this.messagesEnd = el; }}
                              style={{ float:"left", clear: "both" }}>
                         </div>
                     </div>
-                    <div className=" col s12" >
-                        <input style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:"  onKeyPress={this._handleInputKeyPress} id="user_says" type="text" />
+                    <div className="input-box">
+                        <input className='' ref={(input) => { this.talkInput = input; }} placeholder="Type your message ..."  onKeyPress={this._handleInputKeyPress} id="user_says" type="text" />
                     </div>
                     <Cart sessionId={cookies.get('userID')} 
                         isOpenCart={this.state.isOpenCart}
