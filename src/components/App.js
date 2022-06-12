@@ -1,5 +1,6 @@
 import React from 'react';
 import Chatbot from './chatbot/Chatbot';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = ({ domElement }) => {
     const subreddit = domElement.getAttribute("data-subreddit")
