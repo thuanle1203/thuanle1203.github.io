@@ -1,4 +1,4 @@
-import './cart.css';
+import '../../../App.css';
 import React from 'react';
 
 const ProductList = ({ products, onChangeProductQuantity, onRemoveProduct }) => {

@@ -4,7 +4,7 @@ import React from "react"
 import PaymentForm from "./PaymentForm";
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-import './payment.css'
+import '../../../App.css';
 
 const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY
 

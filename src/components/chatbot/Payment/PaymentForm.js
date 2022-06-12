@@ -1,6 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from 'react'
-import './payment.css';
+import '../../../App.css';
 
 
 const CARD_OPTIONS = {

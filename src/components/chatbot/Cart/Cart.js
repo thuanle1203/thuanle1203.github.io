@@ -3,7 +3,7 @@ import cartApi from '../../../api/cartApi';
 import CartHeader from './CartHeader';
 import ProductList from './ProductList';
 import Summary from './Summary';
-import './cart.css';
+import '../../../App.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
