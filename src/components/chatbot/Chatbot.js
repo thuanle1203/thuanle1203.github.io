@@ -7,9 +7,9 @@ import { v4 as uuid } from 'uuid';
 import Message from './Message';
 import orderApi from '../../api/orderApi';
 import Card from './Card';
-// import Cart from './Cart/Cart'
+import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
-// import StripeContainer from './Payment/StripeContainer';
+import StripeContainer from './Payment/StripeContainer';
 
 const cookies = new Cookies();
 
@@ -353,13 +353,13 @@ class Chatbot extends Component {;
                     <div className=" col s12" >
                         <input style={{margin: 0, paddingLeft: '1%', paddingRight: '1%', width: '98%'}} ref={(input) => { this.talkInput = input; }} placeholder="type a message:"  onKeyPress={this._handleInputKeyPress} id="user_says" type="text" />
                     </div>
-                    {/* <Cart sessionId={cookies.get('userID')} 
+                    <Cart sessionId={cookies.get('userID')} 
                         isOpenCart={this.state.isOpenCart}
                         df_event_query={this.df_event_query}
                         closeCartPopup={this.closeCartPopup} />
                     <StripeContainer 
                         isOpenPayment={this.state.isOpenPayment} 
-                        handlePaymentMethod={this.handlePaymentMethod}/> */}
+                        handlePaymentMethod={this.handlePaymentMethod}/>
                 </div>
             );
         } else {

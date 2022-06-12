@@ -4,8 +4,8 @@ import CartHeader from './CartHeader';
 import ProductList from './ProductList';
 import Summary from './Summary';
 import './cart.css';
-// import Popup from 'reactjs-popup';
-// import 'reactjs-popup/dist/index.css';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 const Cart = (props) => {
 
@@ -93,7 +93,7 @@ const Cart = (props) => {
   return (
       
       <div>
-          {/* <Popup open={props.isOpenCart} onClose={updateCart}>  */}
+          <Popup open={props.isOpenCart} onClose={updateCart}> 
             <CartHeader itemCount={itemCount} />
 
             {cart.length > 0 ? (
@@ -122,7 +122,7 @@ const Cart = (props) => {
                 <button>Shopping now</button>
             </div>
             )}
-          {/* </Popup> */}
+          </Popup>
 
        </div>
   );
