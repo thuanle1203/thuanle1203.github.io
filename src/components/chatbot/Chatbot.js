@@ -9,7 +9,7 @@ import orderApi from '../../api/orderApi';
 import Card from './Card';
 import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
-import StripeContainer from './Payment/StripeContainer';
+// import StripeContainer from './Payment/StripeContainer';
 import '../../App.css'
 const cookies = new Cookies();
 
@@ -378,9 +378,9 @@ class Chatbot extends Component {;
                         isOpenCart={this.state.isOpenCart}
                         df_event_query={this.df_event_query}
                         closeCartPopup={this.closeCartPopup} />
-                    <StripeContainer 
+                    {/* <StripeContainer 
                         isOpenPayment={this.state.isOpenPayment} 
-                        handlePaymentMethod={this.handlePaymentMethod}/>
+                        handlePaymentMethod={this.handlePaymentMethod}/> */}
                 </div>
             );
         } else {
