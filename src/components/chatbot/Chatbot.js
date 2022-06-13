@@ -38,7 +38,9 @@ class Chatbot extends Component {;
         };
         if (cookies.get('userID') === undefined) {
             cookies.set('userID', uuid(), { path: '/' });
+            console.log(cookies.get('userID'));
         }
+        console.log('uuid');
     }
 
     async df_text_query(text) {
