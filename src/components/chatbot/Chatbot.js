@@ -36,11 +36,6 @@ class Chatbot extends Component {;
             isOpenPayment: false,
             regenerateToken: 0,
         };
-        if (cookies.get('userID') === undefined) {
-            cookies.set('userID', uuid(), { path: '/' });
-            console.log(cookies.get('userID'));
-        }
-        console.log('uuid');
     }
 
     async df_text_query(text) {
@@ -183,6 +178,12 @@ class Chatbot extends Component {;
             });
             this.setState({ shopWelcomeSent: true, showBot: true });
         }
+
+        if (cookies.get('userID') === undefined) {
+            cookies.set('userID', uuid(), { path: '/' });
+            console.log(cookies.get('userID'));
+        }
+        console.log('uuid');
     }
         
     // closeModal() {
