@@ -8,7 +8,7 @@ import '../../../App.css';
 
 const PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY
 
-const stripeTestPromise = loadStripe(PUBLIC_KEY)
+const stripeTestPromise = loadStripe(String(PUBLIC_KEY))
 
 export default function StripeContainer(props) {
 	return (
