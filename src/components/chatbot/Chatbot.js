@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios/index";
 
 import Cookies from 'universal-cookie';
-import { v4 as uuid } from 'uuid';
-
+import uuid from "uuid";
 import Message from './Message';
 import orderApi from '../../api/orderApi';
 import Card from './Card';
@@ -180,7 +179,7 @@ class Chatbot extends Component {;
         }
 
         if (cookies.get('userID') === undefined) {
-            cookies.set('userID', uuid(), { path: '/' });
+            cookies.set('userID', '628744f688510f36543a8c46', { path: '/' });
             console.log(cookies.get('userID'));
         }
         console.log('uuid');
