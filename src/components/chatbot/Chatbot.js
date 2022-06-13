@@ -180,7 +180,7 @@ class Chatbot extends Component {;
 
         if (cookies.get('userID') === undefined) {
             cookies.set('userID', '628744f688510f36543a8c46', { path: '/' });
-            console.log(cookies.get('userID'));
+            console.log(cookies.get('userID'), uuid.v4());
         }
         console.log('uuid');
     }
