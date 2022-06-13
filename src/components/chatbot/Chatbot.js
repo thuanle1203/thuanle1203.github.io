@@ -106,7 +106,7 @@ class Chatbot extends Component {;
         try {
 
             if (this.state.clientToken === false) {
-                const res = await axios.get('/api/get_client_token');
+                const res = await axios.get(process.env.REACT_APP_API_ACCESS + '/api/get_client_token');
                 this.setState({clientToken: res.data.token});
             }
 
@@ -173,16 +173,14 @@ class Chatbot extends Component {;
             // }
             
             
-        this.props.history.listen(async () => {
-            if (this.props.history.location.pathname === '/shop' && !this.state.shopWelcomeSent) {
-                this.df_event_query('WELCOME_SHOP');
-                const customer = await axios.post('/api/customers', {
-                    sessionId: cookies.get('userID'),
-                    businessId: process.env.REACT_APP_BUSINESS_ID
-                });
-                this.setState({ shopWelcomeSent: true, showBot: true });
-            }
-        });
+        if (!this.state.shopWelcomeSent) {
+            this.df_event_query('WELCOME_SHOP');
+            const customer = await axios.post(process.env.REACT_APP_API_ACCESS + '/api/customers', {
+                sessionId: cookies.get('userID'),
+                businessId: process.env.REACT_APP_BUSINESS_ID
+            });
+            this.setState({ shopWelcomeSent: true, showBot: true });
+        }
     }
         
     // closeModal() {
