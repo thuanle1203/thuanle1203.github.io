@@ -190,7 +190,7 @@ class Chatbot extends Component {
             const { cookies } = this.props;
             cookies.set("userID", uuid.v4(), { path: "/" }); // setting the cookie
             this.setState({ user: cookies.get("userID") });
-            console.log('checkv2', cookies.get('userID'), 'generate', uuid.v4());
+            console.log('checkv3', cookies.get('userID'), 'generate', uuid.v4());
         }
         console.log('uuid');
     }
