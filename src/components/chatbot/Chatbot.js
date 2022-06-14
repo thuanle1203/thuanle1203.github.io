@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios/index";
 
-import { instanceOf } from "prop-types";
-import { withCookies, Cookies } from "react-cookie";
-// import Cookies from 'universal-cookie';
 import uuid from "uuid";
 import Message from './Message';
 import orderApi from '../../api/orderApi';
@@ -12,15 +9,10 @@ import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
 // import StripeContainer from './Payment/StripeContainer';
 import '../../App.css'
-const cookies = new Cookies();
 
 class Chatbot extends Component {
     messagesEnd;
     talkInput;
-    static propTypes = {
-        cookies: instanceOf(Cookies).isRequired
-    };
-
 
     constructor(props) {
         super(props);
@@ -39,9 +31,13 @@ class Chatbot extends Component {
             clientToken: false,
             isOpenCart: false,
             isOpenPayment: false,
-            regenerateToken: 0,
-            user: this.props.cookies.get("userID") || ""
+            regenerateToken: 0
         };
+
+        
+        if (localStorage.getItem('userID') === undefined) {
+            localStorage.setItem('userID', uuid.v4(),);
+        }
     }
 
     async df_text_query(text) {
@@ -66,7 +62,7 @@ class Chatbot extends Component {
     };
 
     handlePaymentMethod = async (id = 0) => {
-        const data = await orderApi.post(id, cookies.get('userID'));
+        const data = await orderApi.post(id, localStorage.getItem('userID'));
 
         // Generate message with order infor
 
@@ -123,7 +119,7 @@ class Chatbot extends Component {
 
             const res = await axios.post(
                 'https://dialogflow.googleapis.com/v2/projects/' + process.env.REACT_APP_GOOGLE_PROJECT_ID +
-                '/agent/sessions/' + process.env.REACT_APP_DF_SESSION_ID + cookies.get('userID') + ':detectIntent',
+                '/agent/sessions/' + process.env.REACT_APP_DF_SESSION_ID + localStorage.getItem('userID') + ':detectIntent',
                 request,
                 config
             );
@@ -179,21 +175,12 @@ class Chatbot extends Component {
         if (!this.state.shopWelcomeSent) {
             this.df_event_query('WELCOME_SHOP');
             const customer = await axios.post(process.env.REACT_APP_API_ACCESS + '/api/customers', {
-                sessionId: cookies.get('userID'),
+                sessionId: localStorage.getItem('userID'),
                 businessId: process.env.REACT_APP_BUSINESS_ID
             });
             this.setState({ shopWelcomeSent: true, showBot: true });
         }
 
-        if (cookies.get('userID') === undefined) {
-            // cookies.set('userID', uuid.v4(), { secure: true, sameSite: 'none' });
-            const { cookies } = this.props;
-            // cookies.set("userID", uuid.v4(), { path: "/", secure: true, sameSite: 'none' }); // setting the cookie
-            localStorage.setItem('userID', uuid.v4(),);
-            this.setState({ user: cookies.get("userID") });
-            console.log('checkv3', localStorage.getItem('userID'));
-        }
-        console.log('uuid');
     }
         
     // closeModal() {
@@ -203,7 +190,7 @@ class Chatbot extends Component {
     addProductToCard(productId) {
         this.df_event_query('ADD_TO_CART', { 
             productId: productId, 
-            sessionId: cookies.get('userID'),
+            sessionId: localStorage.getItem('userID'),
             businessId: process.env.REACT_APP_BUSINESS_ID
         });
     }
@@ -246,7 +233,7 @@ class Chatbot extends Component {
             case 'checkout':
                 this.df_event_query('GET_ADDRESS', { 
                     businessId: process.env.REACT_APP_BUSINESS_ID, 
-                    sessionId: cookies.get('userID')
+                    sessionId: localStorage.getItem('userID')
                 });
                 break;
             case 'view_cart':
@@ -385,7 +372,7 @@ class Chatbot extends Component {
                     <div className="input-box">
                         <input className='' ref={(input) => { this.talkInput = input; }} placeholder="Type your message ..."  onKeyPress={this._handleInputKeyPress} id="user_says" type="text" />
                     </div>
-                    <Cart sessionId={cookies.get('userID')} 
+                    <Cart sessionId={localStorage.getItem('userID')} 
                         isOpenCart={this.state.isOpenCart}
                         df_event_query={this.df_event_query}
                         closeCartPopup={this.closeCartPopup} />
@@ -414,4 +401,4 @@ class Chatbot extends Component {
     }
 }
 
-export default withCookies(Chatbot);
+export default Chatbot;
