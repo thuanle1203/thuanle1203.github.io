@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import axios from "axios/index";
 
-import Cookies from 'universal-cookie';
+import { instanceOf } from "prop-types";
+import { withCookies, Cookies } from "react-cookie";
+// import Cookies from 'universal-cookie';
 import uuid from "uuid";
 import Message from './Message';
 import orderApi from '../../api/orderApi';
@@ -12,9 +14,13 @@ import QuickReplies from './QuickReplies';
 import '../../App.css'
 const cookies = new Cookies();
 
-class Chatbot extends Component {;
+class Chatbot extends Component {
     messagesEnd;
     talkInput;
+    static propTypes = {
+        cookies: instanceOf(Cookies).isRequired
+    };
+
 
     constructor(props) {
         super(props);
@@ -34,6 +40,7 @@ class Chatbot extends Component {;
             isOpenCart: false,
             isOpenPayment: false,
             regenerateToken: 0,
+            user: this.props.cookies.get("userID") || ""
         };
     }
 
@@ -179,7 +186,10 @@ class Chatbot extends Component {;
         }
 
         if (cookies.get('userID') === undefined) {
-            cookies.set('userID', uuid.v4(), { secure: true, sameSite: 'none' });
+            // cookies.set('userID', uuid.v4(), { secure: true, sameSite: 'none' });
+            const { cookies } = this.props;
+            cookies.set("userID", uuid.v4(), { path: "/" }); // setting the cookie
+            this.setState({ user: cookies.get("userID") });
             console.log('checkv2', cookies.get('userID'), 'generate', uuid.v4());
         }
         console.log('uuid');
@@ -403,4 +413,4 @@ class Chatbot extends Component {;
     }
 }
 
-export default Chatbot;
+export default withCookies(Chatbot);
