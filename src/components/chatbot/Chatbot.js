@@ -188,9 +188,10 @@ class Chatbot extends Component {
         if (cookies.get('userID') === undefined) {
             // cookies.set('userID', uuid.v4(), { secure: true, sameSite: 'none' });
             const { cookies } = this.props;
-            cookies.set("userID", uuid.v4(), { path: "/", secure: true, sameSite: 'none' }); // setting the cookie
+            // cookies.set("userID", uuid.v4(), { path: "/", secure: true, sameSite: 'none' }); // setting the cookie
+            localStorage.setItem('userID', uuid.v4(),);
             this.setState({ user: cookies.get("userID") });
-            console.log('checkv3', cookies.get('userID'), 'generate', uuid.v4());
+            console.log('checkv3', localStorage.getItem('userID'));
         }
         console.log('uuid');
     }
