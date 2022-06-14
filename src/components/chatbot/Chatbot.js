@@ -7,7 +7,7 @@ import orderApi from '../../api/orderApi';
 import Card from './Card';
 import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
-// import StripeContainer from './Payment/StripeContainer';
+import { Carousel } from '@trendyol-js/react-carousel';
 import '../../App.css'
 
 class Chatbot extends Component {
@@ -31,9 +31,9 @@ class Chatbot extends Component {
             clientToken: false,
             isOpenCart: false,
             isOpenPayment: false,
-            regenerateToken: 0
+            regenerateToken: 0,
+            businessId: props.businessId
         };
-
         
         if (localStorage.getItem('userID') === undefined) {
             localStorage.setItem('userID', uuid.v4(),);
@@ -62,7 +62,7 @@ class Chatbot extends Component {
     };
 
     handlePaymentMethod = async (id = 0) => {
-        const data = await orderApi.post(id, localStorage.getItem('userID'));
+        const data = await orderApi.post(id, localStorage.getItem('userID'), this.state.businessId);
 
         // Generate message with order infor
 
@@ -176,7 +176,7 @@ class Chatbot extends Component {
             this.df_event_query('WELCOME_SHOP');
             const customer = await axios.post(process.env.REACT_APP_API_ACCESS + '/api/customers', {
                 sessionId: localStorage.getItem('userID'),
-                businessId: process.env.REACT_APP_BUSINESS_ID
+                businessId: this.state.businessId
             });
             this.setState({ shopWelcomeSent: true, showBot: true });
         }
@@ -191,7 +191,7 @@ class Chatbot extends Component {
         this.df_event_query('ADD_TO_CART', { 
             productId: productId, 
             sessionId: localStorage.getItem('userID'),
-            businessId: process.env.REACT_APP_BUSINESS_ID
+            businessId: this.state.businessId
         });
     }
 
@@ -232,7 +232,7 @@ class Chatbot extends Component {
                 break;
             case 'checkout':
                 this.df_event_query('GET_ADDRESS', { 
-                    businessId: process.env.REACT_APP_BUSINESS_ID, 
+                    businessId: this.state.businessId, 
                     sessionId: localStorage.getItem('userID')
                 });
                 break;
@@ -243,16 +243,16 @@ class Chatbot extends Component {
                 this.setState({ isOpenPayment: !this.state.isOpenPayment });
                 break;
             case 'search_by_name':
-                this.df_event_query('SEARCH_PRODUC_BY_NAME', { businessId: process.env.REACT_APP_BUSINESS_ID });
+                this.df_event_query('SEARCH_PRODUC_BY_NAME', { businessId: this.state.businessId });
                 break;
             case 'shopping':
                 this.df_event_query('BUY_MORE');
                 break;
             case 'choose_category':
-                this.df_event_query('CHOOSE_CATEGORY', { businessId: process.env.REACT_APP_BUSINESS_ID });
+                this.df_event_query('CHOOSE_CATEGORY', { businessId: this.state.businessId });
                 break;
             case 'shopping - choose category':
-                this.df_event_query('PRODUCT_BY_CATEGORY', { categoryName: text, businessId: process.env.REACT_APP_BUSINESS_ID });
+                this.df_event_query('PRODUCT_BY_CATEGORY', { categoryName: text, businessId: this.state.businessId });
                 break;
             case 'recommended_yes':
                 this.df_event_query('SHOW_RECOMMENDATIONS');
@@ -286,12 +286,32 @@ class Chatbot extends Component {
             return <div key={i}>
                 <div className="card-panel grey lighten-5 z-depth-1">
                     <div style={{overflow: 'hidden'}}>
-                        <div className="col s2">
-                            <a href="/" className="btn-floating btn-large waves-effect waves-light red">{message.speaks}</a>
-                        </div>
-                        <div style={{ overflow: 'auto', overflowY: 'scroll'}}>
-                            <div style={{ height: 300, width:message.msg.payload.cards.length * 270}}>
-                                {this.renderCards(message.msg.payload.cards)}
+                        <div className='d-flex'>   
+                            <div className="p-2 d-flex align-items-start">
+                                <a href="/" className="">
+                                    <img style={{ height: '32px', width: '32px' }} className='circle-logo' src='https://cdn-icons-png.flaticon.com/512/7498/7498761.png'/>
+                                </a>
+                            </div>
+                            <div>
+                                <div className="mb-2 mt-2 p-2 mess-content">
+                                    <span className="black-text">
+                                        This is product relate
+                                    </span>
+                                </div>
+                                <div style={{ overflow: 'auto' }}>
+                                    <div style={{ height: 230, width: 300 }}>
+                                        <Carousel 
+                                            infinite={false} 
+                                            swipeOn={0.5} 
+                                            show={1.25} 
+                                            slide={1} 
+                                            swiping={true} 
+                                            rightArrow={false} 
+                                            leftArrow={false}>
+                                            {this.renderCards(message.msg.payload.cards)}
+                                        </Carousel>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -375,7 +395,8 @@ class Chatbot extends Component {
                     <Cart sessionId={localStorage.getItem('userID')} 
                         isOpenCart={this.state.isOpenCart}
                         df_event_query={this.df_event_query}
-                        closeCartPopup={this.closeCartPopup} />
+                        closeCartPopup={this.closeCartPopup}
+                        businessId={this.state.businessId} />
                     {/* <StripeContainer 
                         isOpenPayment={this.state.isOpenPayment} 
                         handlePaymentMethod={this.handlePaymentMethod}/> */}

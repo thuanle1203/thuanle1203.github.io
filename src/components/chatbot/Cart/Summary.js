@@ -21,7 +21,7 @@ const Summary = ({
 
   function handleCheckoutbtn() {
     df_event_query('GET_ADDRESS', { 
-      businessId: process.env.REACT_APP_BUSINESS_ID, 
+      businessId: this.state.businessId, 
       sessionId: sessionId
     });
 

@@ -1,10 +1,10 @@
 import React from 'react';
-
+import '../../App.css'
 
 const QuickReply = (props) => {
     if (props.reply.payload) {
         return (
-            <a style={{ margin: 3}} href="/" className="btn-floating btn-large waves-effect waves-light red"
+            <a style={{ margin: 3}} href="/" className="btn"
                onClick={(event) =>
                    props.click(
                        event,
@@ -18,7 +18,7 @@ const QuickReply = (props) => {
     } else {
         return (
             <a style={{ margin: 3}} href={props.reply.link}
-               className="btn-floating btn-large waves-effect waves-light red">
+               className="btn">
                 {props.reply.text}
             </a>
         );

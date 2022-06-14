@@ -32,14 +32,14 @@ const Cart = (props) => {
   useEffect(() => {
     ;(async () => {
         try {
-            const response = await cartApi.get(props.sessionId)
+            const response = await cartApi.get(props.sessionId, props.businessId)
             setCart(response.data)
         } catch (error) {
             console.log(error.message)
         }
         setLoading(false)
     })()
-  }, [props.isOpenCart, props.sessionId]);
+  }, [props.businessId, props.isOpenCart, props.sessionId]);
 
   const onChangeProductQuantity =  (index, event) => {
     const value = event.target.value;
@@ -70,7 +70,7 @@ const Cart = (props) => {
 
   const updateCart = async () => {
     if (isCartUpdate) {
-      const response = await cartApi.put(props.sessionId, cart);
+      const response = await cartApi.put(props.sessionId, cart, props.businessId);
     }
   }
 

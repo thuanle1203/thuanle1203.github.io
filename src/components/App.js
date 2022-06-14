@@ -3,13 +3,12 @@ import Chatbot from './chatbot/Chatbot';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = ({ domElement }) => {
-    const subreddit = domElement.getAttribute("data-subreddit")
-    console.log(subreddit, process.env.REACT_APP_API_ACCESS);
+    const businessId = domElement.getAttribute("business-id")
 
     return (
         <div>
             <div className="container">
-                <Chatbot />
+                <Chatbot businessId={businessId} />
             </div>
         </div>
     );
