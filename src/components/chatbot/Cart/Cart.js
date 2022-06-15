@@ -6,6 +6,7 @@ import Summary from './Summary';
 import '../../../App.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import Paypal from '../Payment/PayPal';
 
 const Cart = (props) => {
 
@@ -123,7 +124,11 @@ const Cart = (props) => {
             </div>
             )}
           </Popup>
-
+          <Popup open={props.isOpenPayment}>
+            <Paypal 
+              total={subTotal}
+              handlePaymentMethod={props.handlePaymentMethod} />
+          </Popup>
        </div>
   );
 };

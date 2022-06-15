@@ -8,7 +8,7 @@ const App = ({ domElement }) => {
     return (
         <div>
             <div className="container">
-                <Chatbot businessId={businessId} />
+                <Chatbot businessId={businessId}  id='chatbot' />
             </div>
         </div>
     );

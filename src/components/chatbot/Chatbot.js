@@ -9,6 +9,9 @@ import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
 import { Carousel } from '@trendyol-js/react-carousel';
 import '../../App.css'
+import Paypal from './Payment/PayPal';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 class Chatbot extends Component {
     messagesEnd;
@@ -61,8 +64,8 @@ class Chatbot extends Component {
         await this.df_client_call(request);
     };
 
-    handlePaymentMethod = async (id = 0) => {
-        const data = await orderApi.post(id, localStorage.getItem('userID'), this.state.businessId);
+    handlePaymentMethod = async (payment) => {
+        const data = await orderApi.post(payment, localStorage.getItem('userID'), this.state.businessId);
 
         // Generate message with order infor
 
@@ -76,6 +79,7 @@ class Chatbot extends Component {
         }
 
         this.setState({ messages: [...this.state.messages, says]});
+        this.setState({ isOpenPayment: !this.state.isOpenPayment });
 
         return data
 
@@ -392,14 +396,13 @@ class Chatbot extends Component {
                     <div className="input-box">
                         <input className='' ref={(input) => { this.talkInput = input; }} placeholder="Type your message ..."  onKeyPress={this._handleInputKeyPress} id="user_says" type="text" />
                     </div>
-                    <Cart sessionId={localStorage.getItem('userID')} 
+                    <Cart sessionId={localStorage.getItem('userID')}
+                        isOpenPayment={this.state.isOpenPayment}
                         isOpenCart={this.state.isOpenCart}
                         df_event_query={this.df_event_query}
                         closeCartPopup={this.closeCartPopup}
-                        businessId={this.state.businessId} />
-                    {/* <StripeContainer 
-                        isOpenPayment={this.state.isOpenPayment} 
-                        handlePaymentMethod={this.handlePaymentMethod}/> */}
+                        businessId={this.state.businessId}
+                        handlePaymentMethod={this.handlePaymentMethod} />
                 </div>
             );
         } else {
