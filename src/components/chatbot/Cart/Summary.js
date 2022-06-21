@@ -20,7 +20,7 @@ const Summary = ({
 
   function handleCheckoutbtn() {
     df_event_query('GET_ADDRESS', { 
-      businessId: props.businessId, 
+      businessId: businessId, 
       sessionId: sessionId
     });
 
