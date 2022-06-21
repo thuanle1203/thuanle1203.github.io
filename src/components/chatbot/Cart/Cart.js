@@ -111,6 +111,7 @@ const Cart = (props) => {
                   sessionId={props.sessionId}
                   isOpenCart={props.isOpenCart}
                   closeCartPopup={props.closeCartPopup}
+                  businessId={props.businessId}
                 // discount={discount}
                 // tax={TAX}
                 // onEnterPromoCode={onEnterPromoCode}

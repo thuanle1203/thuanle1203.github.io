@@ -4,11 +4,10 @@ import React from 'react';
 const Summary = ({
   subTotal,
   discount = 0,
-  onEnterPromoCode,
-  checkPromoCode,
   df_event_query,
   sessionId,
-  closeCartPopup
+  closeCartPopup,
+  businessId
 }) => {
   const total = subTotal - discount;
 
@@ -21,7 +20,7 @@ const Summary = ({
 
   function handleCheckoutbtn() {
     df_event_query('GET_ADDRESS', { 
-      businessId: this.state.businessId, 
+      businessId: props.businessId, 
       sessionId: sessionId
     });
 
