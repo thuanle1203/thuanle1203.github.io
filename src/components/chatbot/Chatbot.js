@@ -9,8 +9,6 @@ import Cart from './Cart/Cart'
 import QuickReplies from './QuickReplies';
 import { Carousel } from '@trendyol-js/react-carousel';
 import '../../App.css'
-import Paypal from './Payment/PayPal';
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
 class Chatbot extends Component {
@@ -38,9 +36,11 @@ class Chatbot extends Component {
             businessId: props.businessId
         };
         
-        if (localStorage.getItem('userID') === undefined) {
+
+        if (localStorage.getItem('userID') == undefined) {
             localStorage.setItem('userID', uuid.v4(),);
         }
+
     }
 
     async df_text_query(text) {
@@ -182,6 +182,7 @@ class Chatbot extends Component {
                 sessionId: localStorage.getItem('userID'),
                 businessId: this.state.businessId
             });
+            console.log(customer)
             this.setState({ shopWelcomeSent: true, showBot: true });
         }
 
