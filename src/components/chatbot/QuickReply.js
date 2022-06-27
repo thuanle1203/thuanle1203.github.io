@@ -9,7 +9,8 @@ const QuickReply = (props) => {
                    props.click(
                        event,
                        props.reply.payload,
-                       props.reply.text
+                       props.reply.text,
+                       props.reply.code
                    )
                }>
                 {props.reply.text}

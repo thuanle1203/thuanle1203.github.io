@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios/index";
 
-import uuid from "uuid";
 import Message from './Message';
 import orderApi from '../../api/orderApi';
 import Card from './Card';
@@ -10,6 +9,7 @@ import QuickReplies from './QuickReplies';
 import { Carousel } from '@trendyol-js/react-carousel';
 import '../../App.css'
 import 'reactjs-popup/dist/index.css';
+import LeadForm from './LeadForm';
 
 class Chatbot extends Component {
     messagesEnd;
@@ -26,21 +26,21 @@ class Chatbot extends Component {
         this.show = this.show.bind(this);
         this.state = {
             messages: [],
-            showBot: true,
+            showBot: false,
             shopWelcomeSent: false,
             cartIsUpdated: false,
             clientToken: false,
             isOpenCart: false,
             isOpenPayment: false,
             regenerateToken: 0,
-            businessId: props.businessId
+            businessId: props.businessId,
+            showLead: false,
+            currentAddress: null
         };
-        
-
+      
         if (localStorage.getItem('userID') == undefined) {
-            localStorage.setItem('userID', uuid.v4(),);
+        this.state.showLead = true
         }
-
     }
 
     async df_text_query(text) {
@@ -65,7 +65,7 @@ class Chatbot extends Component {
     };
 
     handlePaymentMethod = async (payment) => {
-        const data = await orderApi.post(payment, localStorage.getItem('userID'), this.state.businessId);
+        const data = await orderApi.post(payment, localStorage.getItem('userID'), this.state.businessId, this.state.currentAddress);
 
         // Generate message with order infor
 
@@ -80,6 +80,8 @@ class Chatbot extends Component {
 
         this.setState({ messages: [...this.state.messages, says]});
         this.setState({ isOpenPayment: !this.state.isOpenPayment });
+
+        this.df_event_query('WELCOME_SHOP');
 
         return data
 
@@ -155,9 +157,9 @@ class Chatbot extends Component {
                 }
                 this.setState({ messages: [...this.state.messages, says]});
                 let that = this;
-                setTimeout(function(){
-                    that.setState({ showBot: true})
-                }, 2000);
+                // setTimeout(function(){
+                //     that.setState({ showBot: true})
+                // }, 2000);
             }
         }
 
@@ -165,32 +167,32 @@ class Chatbot extends Component {
 
     
     async componentDidMount() {
-        this.df_event_query('Welcome');        
-        
-        // if (window.location.pathname === '/shop' && !this.state.shopWelcomeSent) {
-            //     await this.resolveAfterXSeconds(1);
-            //     // create user
-            //     console.log('the first time', cookies.get('userID'));
-            //     this.df_event_query('WELCOME_SHOP');
-            //     this.setState({ shopWelcomeSent: true, showBot: true });
-            // }
-            
-            
-        if (!this.state.shopWelcomeSent) {
-            this.df_event_query('WELCOME_SHOP');
-            const customer = await axios.post(process.env.REACT_APP_API_ACCESS + '/api/customers', {
-                sessionId: localStorage.getItem('userID'),
-                businessId: this.state.businessId
-            });
-            console.log(customer)
-            this.setState({ shopWelcomeSent: true, showBot: true });
-        }
+      
+      // if (window.location.pathname === '/shop' && !this.state.shopWelcomeSent) {
+          //     await this.resolveAfterXSeconds(1);
+          //     // create user
+          //     console.log('the first time', cookies.get('userID'));
+          //     this.df_event_query('WELCOME_SHOP');
+          //     this.setState({ shopWelcomeSent: true, showBot: true });
+          // }
+          
+          
+      if (localStorage.getItem('userID') != undefined) {
+        this.df_event_query('Welcome');  
+        this.df_event_query('WELCOME_SHOP');
+      }
 
     }
         
     // closeModal() {
     //     this.setState({ isOpenCart: false });
     // }
+
+    doneLeadForm = () => {
+      this.setState({ showLead: false, showBot: true })
+      this.df_event_query('Welcome');  
+      this.df_event_query('WELCOME_SHOP');
+    }
         
     addProductToCard(productId) {
         this.df_event_query('ADD_TO_CART', { 
@@ -198,6 +200,30 @@ class Chatbot extends Component {
             sessionId: localStorage.getItem('userID'),
             businessId: this.state.businessId
         });
+    }
+
+    handleSetAddressClick(code) {
+      this.setState({ currentAddress: code })
+      const says = {
+        speaks: 'bot',
+        msg: {
+            payload : { 
+              text: 'Please choose payment method you want?',
+              quick_replies: [
+                  {
+                      text: 'Payment Online',
+                      payload: 'view_payment'
+                  }, 
+                  {
+                      text: 'COD',
+                      payload: 'cod'
+                  }
+              ] 
+          }
+        }
+      }
+
+      this.setState({ messages: [...this.state.messages, says]});
     }
 
     resolveAfterXSeconds(x) {
@@ -209,7 +235,9 @@ class Chatbot extends Component {
     }
 
     componentDidUpdate() {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => {
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }, 250)
         if ( this.talkInput ) {
             this.talkInput.focus();
         }
@@ -221,53 +249,57 @@ class Chatbot extends Component {
         this.setState({showBot: true});
     }
 
-    hide(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.setState({showBot: true});
+    hide = () => {
+        this.setState({showBot: false});
     }
 
-    _handleQuickReplyPayload(event, payload, text) {
+    _handleQuickReplyPayload(event, payload, text, code) {
         event.preventDefault();
         event.stopPropagation();
 
         switch (payload) {
-            case 'cod': 
-                this.handlePaymentMethod()
-                break;
-            case 'checkout':
-                this.df_event_query('GET_ADDRESS', { 
-                    businessId: this.state.businessId, 
-                    sessionId: localStorage.getItem('userID')
-                });
-                break;
-            case 'view_cart':
-                this.setState({ isOpenCart: !this.state.isOpenCart });
-                break;
-            case 'view_payment':
-                this.setState({ isOpenPayment: !this.state.isOpenPayment });
-                break;
-            case 'search_by_name':
-                this.df_event_query('SEARCH_PRODUC_BY_NAME', { businessId: this.state.businessId });
-                break;
-            case 'shopping':
-                this.df_event_query('BUY_MORE');
-                break;
-            case 'choose_category':
-                this.df_event_query('CHOOSE_CATEGORY', { businessId: this.state.businessId });
-                break;
-            case 'shopping - choose category':
-                this.df_event_query('PRODUCT_BY_CATEGORY', { categoryName: text, businessId: this.state.businessId });
-                break;
-            case 'recommended_yes':
-                this.df_event_query('SHOW_RECOMMENDATIONS');
-                break;
-            case 'training_masterclass':
-                this.df_event_query('MASTERCLASS');
-                break;
-            default:
-                this.df_text_query(text);
-                break;
+          case 'set-address-for-order':
+            this.handleSetAddressClick(code)
+            break;
+          case 'cod': 
+              this.handlePaymentMethod()
+              break;
+          case 'checkout':
+              this.df_event_query('CHECKOUT');
+              break;
+          case 'new-address':
+            this.df_event_query('GET_ADDRESS', { businessId: this.state.businessId, sessionId: localStorage.getItem('userID') });
+            break;
+          case 'current-address':
+            this.df_event_query('GET_CURRENT_ADDRESIES', { businessId: this.state.businessId, sessionId: localStorage.getItem('userID') });
+            break;
+          case 'view_cart':
+              this.setState({ isOpenCart: !this.state.isOpenCart });
+              break;
+          case 'view_payment':
+              this.setState({ isOpenPayment: !this.state.isOpenPayment });
+              break;
+          case 'search_by_name':
+              this.df_event_query('SEARCH_PRODUC_BY_NAME', { businessId: this.state.businessId });
+              break;
+          case 'shopping':
+              this.df_event_query('BUY_MORE');
+              break;
+          case 'choose_category':
+              this.df_event_query('CHOOSE_CATEGORY', { businessId: this.state.businessId });
+              break;
+          case 'shopping - choose category':
+              this.df_event_query('PRODUCT_BY_CATEGORY', { categoryName: text, businessId: this.state.businessId });
+              break;
+          case 'recommended_yes':
+              this.df_event_query('SHOW_RECOMMENDATIONS');
+              break;
+          case 'training_masterclass':
+              this.df_event_query('MASTERCLASS');
+              break;
+          default:
+              this.df_text_query(text);
+              break;
         }
     }
 
@@ -356,7 +388,7 @@ class Chatbot extends Component {
     render() {
         if (this.state.showBot) {
             return (
-                <div className='widget-show' style={{ minHeight: 500, width:400, position: 'absolute', bottom: 40, right: 10, border: '1px solid lightgray'}}>
+                <div className='widget-show fade-in' style={{ minHeight: 500, width:400, position: 'absolute', bottom: 40, right: 20, border: '1px solid lightgray'}}>
                     <nav>
                         <div className="widget-header d-block m-0 p-2">
                             <div className='d-flex w-100'>
@@ -376,11 +408,11 @@ class Chatbot extends Component {
                                 </div>
                                 <div id="nav-mobile" className="d-flex align-items-center" style={{ marginLeft: 'auto' }}>
                                     <div>
-                                        <a href="/" onClick={this.hide}>
+                                        <div onClick={this.hide}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                             </svg>
-                                        </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -391,7 +423,7 @@ class Chatbot extends Component {
 
                         {this.renderMessages(this.state.messages)}
                         <div ref={(el) => { this.messagesEnd = el; }}
-                             style={{ float:"left", clear: "both" }}>
+                             style={{ float:"left", clear: "both", overflow: 'scroll' }}>
                         </div>
                     </div>
                     <div className="input-box">
@@ -406,22 +438,26 @@ class Chatbot extends Component {
                         handlePaymentMethod={this.handlePaymentMethod} />
                 </div>
             );
+        } else if (this.state.showLead) {
+          return (
+            <div>
+              <LeadForm hide={this.hide} 
+                showBot={this.state.showBot} showLead={this.state.showLead} doneLeadForm={this.doneLeadForm} businessId={this.state.businessId} />
+            </div>
+          )
         } else {
-            return (
-                <div style={{ minHeight: 40, maxHeight: 500, width:400, position: 'absolute', bottom: 0, right: 0, border: '1px solid lightgray'}}>
-                    <nav>
-                        <div className="nav-wrapper">
-                            <a href="/" className="brand-logo">ChatBot</a>
-                            <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                <li><a href="/" onClick={this.show}>Show</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                    <div ref={(el) => { this.messagesEnd = el; }}
-                         style={{ float:"left", clear: "both" }}>
-                    </div>
-                </div>
-            );
+          return (
+            <div className='chatbot-collapse kreep'>
+              <div id="nav-mobile" className="right hide-on-med-and-down d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                <a href="/" onClick={this.show}><img src={require('../../asset/image/bot.png')} /></a>
+              </div>
+                
+              <div ref={(el) => { this.messagesEnd = el; }}
+                style={{ float:"left", clear: "both" }}>
+              </div>
+            </div>
+          );
+          
         }
     }
 }

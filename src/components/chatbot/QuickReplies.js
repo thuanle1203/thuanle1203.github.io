@@ -8,8 +8,8 @@ class QuickReplies extends Component {
         this._handleClick = this._handleClick.bind(this);
     }
 
-    _handleClick(event, payload, text) {
-        this.props.replyClick(event, payload, text);
+    _handleClick(event, payload, text, code) {
+        this.props.replyClick(event, payload, text, code);
     }
 
     renderQuickReply(reply, i) {

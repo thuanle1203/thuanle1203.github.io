@@ -19,7 +19,7 @@ const Summary = ({
   }
 
   function handleCheckoutbtn() {
-    df_event_query('GET_ADDRESS', { 
+    df_event_query('CHECKOUT', { 
       businessId: businessId, 
       sessionId: sessionId
     });

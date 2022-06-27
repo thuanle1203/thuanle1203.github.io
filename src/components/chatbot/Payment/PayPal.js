@@ -23,8 +23,6 @@ export default function Paypal(props) {
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
           const response = await props.handlePaymentMethod(order, 'online');
-
-          console.log(response);
         },
         onError: (err) => {
           console.log(err);
