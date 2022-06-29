@@ -79,7 +79,7 @@ class Chatbot extends Component {
         }
 
         this.setState({ messages: [...this.state.messages, says]});
-        this.setState({ isOpenPayment: !this.state.isOpenPayment });
+        this.setState({ isOpenPayment: false });
 
         this.df_event_query('WELCOME_SHOP');
 

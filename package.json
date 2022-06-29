@@ -22,7 +22,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3006 react-scripts start",
     "build": "react-scripts build",
     "build:widget": "parcel build src/index.js --no-source-maps -d docs",
     "test": "react-scripts test",
