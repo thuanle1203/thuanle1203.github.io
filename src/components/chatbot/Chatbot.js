@@ -208,6 +208,7 @@ class Chatbot extends Component {
     }
         
     addProductToCard(productId) {
+        console.log(productId, this.state.businessId, localStorage.getItem('userID'))
         this.df_event_query('ADD_TO_CART', { 
             productId: productId, 
             sessionId: localStorage.getItem('userID'),

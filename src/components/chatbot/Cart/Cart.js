@@ -19,12 +19,12 @@ const Cart = (props) => {
   const [promoCode, setPromoCode] = React.useState("");
   const [discountPercent, setDiscountPercent] = React.useState(0);
 
-  const itemCount = cart.reduce((quantity, product) => {
-    return quantity + +product.quantity;
+  const itemCount = cart.reduce((itemQuantity, product) => {
+    return itemQuantity + + product.itemQuantity;
   }, 0);
 
   const subTotal = cart.reduce((total, product) => {
-    return total + product.price * + product.quantity;
+    return total + product.price * + product.itemQuantity;
   }, 0);
 
   const discount = (subTotal * discountPercent) / 100;
