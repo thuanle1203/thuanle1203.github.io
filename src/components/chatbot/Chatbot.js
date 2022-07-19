@@ -349,7 +349,7 @@ class Chatbot extends Component {
                                     </span>
                                 </div>
                                 <div style={{ overflow: 'auto' }}>
-                                    <div style={{ height: 230, width: 300 }}>
+                                    <div style={{ height: 265, width: 300 }}>
                                         <Carousel 
                                             infinite={false} 
                                             swipeOn={0.5} 

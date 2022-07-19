@@ -57,6 +57,13 @@
 
 /* Style */
 
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 #chatbot::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -191,6 +198,7 @@
 
 .card img {
   height: 100px;
+  object-fit: contain;
 }
 
 .card-body {
