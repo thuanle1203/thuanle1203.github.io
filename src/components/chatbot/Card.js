@@ -2,7 +2,7 @@ import React from 'react';
 
 const Card = (props) => {
     return (
-        <div  style={{ height: 265, paddingRight:10, float: 'left'}}>
+        <div  style={{ height: 285, paddingRight:10, float: 'left'}}>
             <div className="card">
                 <div className='d-flex' style={{ flexWrap: 'wrap'}}>
                     <div className='img-holder' style={{ flex: '1 0 50%'}}> 
