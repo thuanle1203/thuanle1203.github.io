@@ -293,7 +293,7 @@ class Chatbot extends Component {
               this.setState({ isOpenPayment: !this.state.isOpenPayment });
               break;
           case 'search_by_name':
-              this.df_event_query('SEARCH_PRODUCT_BY_NAME', { businessId: this.state.businessId });
+              this.df_event_query('SEARCH_PRODUC_BY_NAME', { businessId: this.state.businessId });
               break;
           case 'shopping':
               this.df_event_query('BUY_MORE');
