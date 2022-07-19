@@ -27,6 +27,9 @@ const ProductList = ({ products, onChangeProductQuantity, onRemoveProduct }) => 
                     <a href="#">{product.name}</a>
                   </div>
                   <div className="description">{product.description}</div>
+                  <div>
+                      Quantity: <span class='quantity-show' style={{ fontSize: '15px'}}>{product.quantity}</span>
+                  </div>
                   <div className="price">{formatCurrency(product.price)}</div>
                 </div>
               </div>
@@ -37,7 +40,7 @@ const ProductList = ({ products, onChangeProductQuantity, onRemoveProduct }) => 
                     type="text"
                     className="quantity"
                     step="1"
-                    value={product.quantity}
+                    value={product.itemQuantity}
                     onChange={(event) => onChangeProductQuantity(index, event)}
                   />
                 </div>

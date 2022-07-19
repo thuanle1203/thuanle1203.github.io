@@ -68,23 +68,36 @@ class Chatbot extends Component {
         const data = await orderApi.post(payment, localStorage.getItem('userID'), this.state.businessId, this.state.currentAddress);
 
         // Generate message with order infor
-
-        const says = {
+        if (data.data.success) {
+            const says = {
+                speaks: 'bot',
+                msg: {
+                    text : {
+                        text: 'Thank you for your order\nThis\'s your order infor: \nOrder ID: ' + data.data.order._id
+                    }
+                }
+            }
+    
+            this.setState({ messages: [...this.state.messages, says]});
+            this.setState({ isOpenPayment: false });
+    
+            this.df_event_query('WELCOME_SHOP');
+    
+            return data
+        } else {
+          const says = {
             speaks: 'bot',
             msg: {
                 text : {
-                    text: 'Thank you for your order\nThis\'s your order infor: \nOrder ID: ' + data.data.order._id
+                    text: 'It seems that the number of rows is not enough for your order. Please choose again.'
                 }
             }
         }
-
         this.setState({ messages: [...this.state.messages, says]});
         this.setState({ isOpenPayment: false });
 
         this.df_event_query('WELCOME_SHOP');
-
-        return data
-
+        }
     }
 
     df_event_query = async (event, parameters) => {
@@ -449,7 +462,7 @@ class Chatbot extends Component {
           return (
             <div className='chatbot-collapse kreep'>
               <div id="nav-mobile" className="right hide-on-med-and-down d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                <a href="/" onClick={this.show}><img src={require('../../asset/image/bot.png')} /></a>
+                <a href="/" onClick={this.show}><img src="https://cdn3.iconfinder.com/data/icons/chat-bot-emoji-filled-color/300/35618308Untitled-3-512.png"/></a>
               </div>
                 
               <div ref={(el) => { this.messagesEnd = el; }}

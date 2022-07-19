@@ -13,6 +13,9 @@ const Card = (props) => {
                         <div className="card-title m-0">
                             <h5>{props.payload.name}</h5>
                             <span className='m-0'>${props.payload.price}</span>
+                            <div>
+                                Quantity: <span class='quantity-show'>{props.payload.quantity}</span>
+                            </div>
                         </div>
                         {/* <div className="view-btn">
                             <a href="/">View Details</a>

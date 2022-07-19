@@ -81,10 +81,11 @@
   width:70px;
   height: 70px;
   border-radius: 50%;
-  position: absolute;
+  position: fixed;
   bottom: 40px;
   right: 40px;
   border: 1px solid lightgray;
+  background-color: white;
 }
 
 .chatbot-collapse img {
@@ -380,6 +381,14 @@ header .count {
 .detail {
   padding: 0 0.5rem;
   line-height: 2.2rem;
+}
+
+.quantity-show {
+  background: #16cc9b;
+  color: white;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 12px;
 }
 
 .detail .name {
