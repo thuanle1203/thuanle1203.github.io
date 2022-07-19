@@ -401,7 +401,7 @@ class Chatbot extends Component {
     render() {
         if (this.state.showBot) {
             return (
-                <div className='widget-show fade-in' style={{ minHeight: 500, width:400, position: 'absolute', bottom: 40, right: 20, border: '1px solid lightgray'}}>
+                <div className='widget-show fade-in' style={{ minHeight: 500, width:400, position: 'fixed', bottom: 40, right: 20, border: '1px solid lightgray'}}>
                     <nav>
                         <div className="widget-header d-block m-0 p-2">
                             <div className='d-flex w-100'>
